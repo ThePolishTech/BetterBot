@@ -10,6 +10,7 @@ func FillResponses() {
 		{triggers: []string{"doot"}, response: "https://tenor.com/tyG1.gif"},
 		{triggers: []string{"sus", "among us", "amogus", "impostor"}, response: "Funny Amogus sussy impostor\nhttps://tenor.com/bs8aU.gif", isMedia: false},
 		{triggers: []string{"mlik"}, response: "https://tenor.com/q6vqHU4ETLK.gif", isMedia: false},
+		{triggers: []string{"risk-of-rain"}, response: "https://tenor.com/view/risk-of-rain-risk-of-rain-2-tater-brigade-rain-flying-gif-8263622248996575525", isMedia: false },
 
 		{triggers: []string{"scronch", "scornch"}, response: "scronch", isMedia: true},
 	}
