@@ -136,5 +136,5 @@ func isSWAG(m *discordgo.Member) bool {
 }
 
 func IsAdminAbuser(m *discordgo.Member) bool {
-	return m.User.ID == "384422339393355786" || m.User.ID == "920342100468436993" || m.User.ID == "1079774043684745267" || m.User.ID == "952145898824138792"
+	return m.User.ID == "384422339393355786" || m.User.ID == "394212669114286090" || m.User.ID == "920342100468436993" || m.User.ID == "1079774043684745267" || m.User.ID == "952145898824138792"
 }

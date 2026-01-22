@@ -3,8 +3,6 @@ package stocks
 import (
 	"BetterScorch/database"
 	"fmt"
-	"log/slog"
-	"math/rand"
 	"strconv"
 	"strings"
 	"sync"
@@ -219,32 +217,38 @@ func Enter(user string) error {
 }
 
 func RegularHandler() {
-	value, _ := GetCompanyValue("Random Dynamics")
+	const maxPoints = 300
 
 	executionLine := plotter.XYs{}
 	reviveLine := plotter.XYs{}
 	gambleLine := plotter.XYs{}
-	randomLine := plotter.XYs{}
 
-	for true {
-		randInt := rand.Intn(1001) - 500
-		slog.Info("Changing Random Dynamics value", "delta", randInt)
-		ModifyCompanyValue("Random Dynamics", randInt)
-
+	for {
 		now := float64(time.Now().Unix())
 
-		value, _ = GetCompanyValue("Execution Solutions LLC")
-		executionLine = append(executionLine, plotter.XY{X: now, Y: float64(value)})
+		// Update and append latest values
+		if value, _ := GetCompanyValue("Execution Solutions LLC"); true {
+			executionLine = append(executionLine, plotter.XY{X: now, Y: float64(value)})
+			if len(executionLine) > maxPoints {
+				executionLine = executionLine[len(executionLine)-maxPoints:]
+			}
+		}
 
-		value, _ = GetCompanyValue("Revival Technologies")
-		reviveLine = append(reviveLine, plotter.XY{X: now, Y: float64(value)})
+		if value, _ := GetCompanyValue("Revival Technologies"); true {
+			reviveLine = append(reviveLine, plotter.XY{X: now, Y: float64(value)})
+			if len(reviveLine) > maxPoints {
+				reviveLine = reviveLine[len(reviveLine)-maxPoints:]
+			}
+		}
 
-		value, _ = GetCompanyValue("Gambling Inc")
-		gambleLine = append(gambleLine, plotter.XY{X: now, Y: float64(value)})
+		if value, _ := GetCompanyValue("Gambling Inc"); true {
+			gambleLine = append(gambleLine, plotter.XY{X: now, Y: float64(value)})
+			if len(gambleLine) > maxPoints {
+				gambleLine = gambleLine[len(gambleLine)-maxPoints:]
+			}
+		}
 
-		value, _ = GetCompanyValue("Random Dynamics")
-		randomLine = append(randomLine, plotter.XY{X: now, Y: float64(value)})
-
+		// Plot main chart
 		p := plot.New()
 		p.Title.Text = "Stonks"
 		p.X.Label.Text = "Time"
@@ -254,9 +258,9 @@ func RegularHandler() {
 		plotutil.AddLinePoints(p,
 			"Execution Solutions LLC", executionLine,
 			"Revival Technologies", reviveLine,
-			"Random Dynamics", randomLine,
 		)
 
+		// Plot gambling chart
 		p2 := plot.New()
 		p2.Title.Text = "Gamble stonks"
 		p2.X.Label.Text = "Time"
@@ -270,11 +274,10 @@ func RegularHandler() {
 		if err := p.Save(10*vg.Inch, 4*vg.Inch, "multiline.png"); err != nil {
 			panic(err)
 		}
-
 		if err := p2.Save(10*vg.Inch, 4*vg.Inch, "gamble.png"); err != nil {
 			panic(err)
 		}
 
-		time.Sleep(1 * time.Minute)
+		time.Sleep(15 * time.Minute)
 	}
 }

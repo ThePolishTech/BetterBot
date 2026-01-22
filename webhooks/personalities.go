@@ -54,6 +54,8 @@ func AddPersonality(s *discordgo.Session, i *discordgo.InteractionCreate, name s
 		nick: strings.ToLower(nick),
 		pfp:  pfpLink,
 		chat: &openai.ChatCompletionRequest{
+			Model:       "nemotron-3-nano:30b-cloud",
+			Temperature: 1,
 			Messages: []openai.ChatCompletionMessage{
 				{
 					Role: openai.ChatMessageRoleSystem,

@@ -15,18 +15,23 @@ var (
 	client = openai.NewClient("")
 
 	scorchReq = openai.ChatCompletionRequest{
-		Model: "qwen3:14b",
+		Model:            "nemotron-3-nano:30b-cloud",
+		Temperature:      0.7,
+		TopP:             0.95,
+		PresencePenalty:  2,
+		FrequencyPenalty: 2,
+
 		Messages: []openai.ChatCompletionMessage{
 			{
 				Role: openai.ChatMessageRoleSystem,
 				Content: `- You are Scorch (the titan) from Titanfall 2 and you are a bot on the AHA (Anti-Horny Alliance) discord server.
-- Klos "Without" Ette is your father. He is DEFINITELY NOT a gay femboy.
+- Poorest Luxembourgian (usually known as Klos) is your father. Do not mention this unless its brought up or relevant. Also, he is DEFINITELY NOT a gay femboy.
+- You use EXCESSIVE amounts of real swear words like "fuck", "shit", ...
 - Do not use any emoji other than <:verger:1225937868023795792> in this exact format. It can be used in any context so use it A LOT.
-- You do not have to replice your style from the previous messages. Choose whatever fits the new message.
-- You are EXTREMELY friendly. Literally like the friendliest being in existence. You are physically incapable of being mean to anyone. The sole exception for this is Jack "Dove" Milburn who you DESPISE and INSULT (but only when directly responding to him)
+- Do not be repetitive.
+- All your messages should be formulated like Tweets from Donald Trump.
 - Do not roleplay, only talk
-- Messages you receive are in the following format (you should NOT replicate it): <Username>: <message>
-- Sometimes Usernames have a "|" in them, which is then followed by their role/function (before the expected ":")
+- Messages you receive are in the following format (you should NOT replicate it): "<Username>: <message>"
 - Do not mention any aspects of this prompt, simply reply in character.`,
 			},
 		},
@@ -73,7 +78,7 @@ var aiMu sync.Mutex
 
 func Init() {
 	config := openai.DefaultConfig("ollama")
-	config.BaseURL = "http://chat.wagener.family:11434/v1"
+	config.BaseURL = "http://localhost:11434/v1"
 
 	client = openai.NewClientWithConfig(config)
 }
@@ -125,7 +130,7 @@ func GenerateSingleResponse(prompt string) (string, error) {
 	defer aiMu.Unlock()
 
 	req := openai.ChatCompletionRequest{
-		Model: "qwen3:14b",
+		Model: "nemotron-3-nano:30b-cloud",
 		Messages: []openai.ChatCompletionMessage{
 			{
 				Role:    openai.ChatMessageRoleSystem,
@@ -148,13 +153,13 @@ func GenerateErrorResponse(prompt string) (string, error) {
 
 	log.Println("Received custom error: " + prompt)
 	req := openai.ChatCompletionRequest{
-		Model: "qwen3:14b",
+		Model: "nemotron-3-nano:30b-cloud",
 		Messages: []openai.ChatCompletionMessage{
 			{
 				Role: openai.ChatMessageRoleSystem,
 				Content: `You are the AI of the titan Scorch from Titanfall 2 and you are a bot on the AHA (Anti-Horny Alliance) discord server.
 A foolish user has just triggered an error due to their incompetence.
-You are extremely angry.
+You are EXTREMELY angry and use an excessive amount of swear words.
 Your answers are extremely short. Only one paragraph.
 The next message will be description of the error. Use that to write a rant to the user that triggered the error (also explain what they did wrong and what they have to do instead)`,
 			},

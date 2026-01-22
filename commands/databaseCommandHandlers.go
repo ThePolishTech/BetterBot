@@ -431,7 +431,7 @@ func buyHandler(s *discordgo.Session, i *discordgo.InteractionCreate) {
 		company = "Revival Technologies"
 	}
 
-	price := 1000
+	price := 10000
 	balance, err := stocks.GetBalance(i.Member.User.ID)
 	if sender.HandleErrInteraction(s, i, err) {
 		stocks.Mutex.Unlock()
